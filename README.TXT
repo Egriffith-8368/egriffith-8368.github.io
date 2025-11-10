@@ -1,0 +1,1 @@
+Project Created entirley by chatgpt with its open source code. The project hosts a website that allows you to use your own api key and chat with chatgpt. There is no profiing No servesrs holding what you ask chatgpt. The site is just a gateway to get around school blocks and stil use chatgpt.
