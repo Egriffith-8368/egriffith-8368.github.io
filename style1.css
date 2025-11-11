@@ -1,0 +1,66 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf0 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 :root\{\
+\
+.sidebar-top\{display:flex; gap:8px; margin-bottom:16px\}\
+.sidebar-section\{margin-top:12px\}\
+.sidebar-section h4\{color:var(--muted); font-weight:600; margin:12px 0 8px 0; font-size:.9rem\}\
+.conv-list\{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:6px\}\
+.conv-item\{display:flex; align-items:center; gap:8px; padding:10px; border-radius:10px; background:transparent; cursor:pointer; border:1px solid transparent\}\
+.conv-item:hover\{background:rgba(124,146,255,.08); border-color:rgba(124,146,255,.15)\}\
+.conv-title\{white-space:nowrap; overflow:hidden; text-overflow:ellipsis\}\
+.conv-date\{color:var(--muted); font-size:.75rem\}\
+\
+/* Header */\
+.topbar\{display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--panel-2); border-bottom:1px solid #22263a\}\
+.title-wrap\{display:flex; align-items:baseline; gap:12px\}\
+.title\{font-size:1rem; margin:0; letter-spacing:.2px; color:#cdd3df\}\
+.thread-title\{font-size:.85rem; color:var(--muted)\}\
+.topbar-right\{display:flex; gap:8px\}\
+\
+/* Chat */\
+.chat\{flex:1; overflow:auto; padding:20px; display:flex; flex-direction:column; gap:14px\}\
+.bubble\{display:grid; grid-template-columns:36px 1fr; gap:12px; background:rgba(255,255,255,.02); border:1px solid #262b40; border-radius:14px; padding:12px\}\
+.avatar\{width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, var(--brand), var(--brand-2));\}\
+.avatar[data-role="user"]\{background:linear-gradient(135deg, #22d3ee, #14b8a6)\}\
+.content .meta\{display:flex; align-items:center; gap:10px; margin-bottom:4px\}\
+.content .role\{font-weight:600\}\
+.content .time\{color:var(--muted); font-size:.78rem\}\
+.content .text\{white-space:pre-wrap; line-height:1.5\}\
+\
+/* Composer */\
+.composer\{display:grid; grid-template-columns:1fr auto; gap:8px; padding:12px; border-top:1px solid #22263a; background:var(--panel)\}\
+.composer textarea\{resize:none; width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a2f47; background:#0e1220; color:var(--text); outline:none\}\
+.composer textarea:focus\{border-color:var(--brand); box-shadow:0 0 0 3px var(--ring)\}\
+\
+/* Buttons */\
+.btn\{appearance:none; border:none; border-radius:10px; padding:10px 12px; font-weight:600; cursor:pointer\}\
+.btn-primary\{background:linear-gradient(180deg,var(--brand),var(--brand-2)); color:white\}\
+.btn-secondary\{background:#22263a; color:#d5daea; border:1px solid #2c3351\}\
+.btn-ghost\{background:transparent; color:#cfd6ea; border:1px solid #2a2f47\}\
+.btn-danger\{background:linear-gradient(180deg,#ff7a7a,#ff5151); color:#fff\}\
+.btn:disabled\{opacity:.6; cursor:not-allowed\}\
+.inline-row\{display:flex; gap:8px; align-items:center; margin-top:8px\}\
+.setting-row\{margin-bottom:14px\}\
+.muted\{color:var(--muted)\}\
+\
+/* Gate */\
+.gate\{position:fixed; inset:0; display:grid; place-items:center; background:linear-gradient(0deg, rgba(15,17,22,.6), rgba(15,17,22,.6))\}\
+.gate-card\{width:min(92vw,420px); background:var(--panel-2); border:1px solid #242a43; border-radius:16px; padding:18px\}\
+.gate-card h2\{margin:0 0 8px 0\}\
+.gate-row\{display:flex; gap:8px; margin:12px 0\}\
+.gate-row input\{flex:1; padding:10px 12px; border-radius:10px; border:1px solid #2a2f47; background:#0e1220; color:var(--text)\}\
+.gate-hint\{color:var(--muted); margin-top:6px\}\
+\
+/* Scrollbar (subtle) */\
+*\{scrollbar-width:thin; scrollbar-color:#2a2f47 transparent\}\
+*::-webkit-scrollbar\{height:8px; width:8px\}\
+*::-webkit-scrollbar-thumb\{background:#2a2f47; border-radius:8px\}\
+}
