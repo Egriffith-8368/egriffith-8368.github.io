@@ -15,7 +15,9 @@ const DEFAULTS = { model: "gpt-4o-mini" };
 
 // ------------------ Helpers ------------------
 function hashString(str){
-  let h = 5381; for (let i=0;i<str.length;i++) h = ((h<<5)+h) + str.charCodeAt(i); return String(h>>>0);
+  let h = 5381;
+  for (let i = 0; i < str.length; i++) h = ((h<<5)+h) + str.charCodeAt(i);
+  return String(h >>> 0);
 }
 
 function safeGet(key){
@@ -62,7 +64,8 @@ function elFromTemplate(role, text){
   node.querySelector('.avatar').setAttribute('data-role', role);
   node.querySelector('[data-field="roleLabel"]').textContent = role==='user'?'You':'Assistant';
   node.querySelector('[data-field="time"]').textContent = formatTime(Date.now());
-  node.querySelector('[data-field="text"]').textContent = text; return node;
+  node.querySelector('[data-field="text"]').textContent = text;
+  return node;
 }
 function renderThread(){
   const thread = activeThread(); if(!thread) return;
@@ -89,7 +92,7 @@ function setLockedUI(locked){
 // ------------------ Password Gate ------------------
 function openGate(){
   const isSet = safeGet(STORE.PASSWORD_SET) === '1';
-  setLockedUI(true); gateInput.value = '';
+  setLockedUI(true); if (gateInput) gateInput.value = '';
   gateMessage.textContent = isSet ? 'Enter your password to unlock and view your last 3 chats.' : 'Create a simple password to unlock this app. (Not encryption — just a gate)';
   gateHint.textContent = '';
 }
@@ -148,16 +151,55 @@ function mountEventHandlers(){
     state.threads.unshift({ id, title:'New chat', createdAt: Date.now(), messages: [] });
     state.activeThreadId = id; saveData(); renderRecent(); renderThread(); userInput?.focus();
   });
-  saveKeyBtn?.addEventListener('click', ()=>{ state.apiKey = apiKeyInput.value.trim(); state.model = modelSelect.value; saveData(); saveKeyBtn.textContent='Saved'; setTimeout(()=>saveKeyBtn.textContent='Save', 900); });
-  clearBtn?.addEventListener('click', ()=>{ const t=activeThread(); if(!t) return; if(!confirm('Clear messages in this chat?')) return; t.messages=[]; t.title='New chat'; saveData(); renderThread(); });
-  exportBtn?.addEventListener('click', ()=>{ const t=activeThread(); if(!t) return; const blob=new Blob([JSON.stringify(t,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`${(t.title||'chat').replace(/[^a-z0-9-_]/gi,'_')}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); });
+
+  // Save API key + model
+  saveKeyBtn?.addEventListener('click', ()=>{
+    state.apiKey = (apiKeyInput.value || '').trim();
+    state.model = modelSelect.value || DEFAULTS.model;
+    saveData();
+    const prev = saveKeyBtn.textContent;
+    saveKeyBtn.textContent = 'Saved';
+    setTimeout(()=>{ try { saveKeyBtn.textContent = prev; } catch(e){} }, 1500);
+  });
+
+  // Clear current chat
+  clearBtn?.addEventListener('click', ()=>{
+    const t = activeThread();
+    if(!t) return;
+    if(!confirm('Clear messages in this chat?')) return;
+    t.messages = [];
+    t.title = 'New chat';
+    saveData();
+    renderThread();
+    renderRecent();
+  });
+
+  // Export current chat to JSON file
+  exportBtn?.addEventListener('click', ()=>{
+    const t = activeThread();
+    if(!t) return;
+    const blob = new Blob([JSON.stringify(t, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `chat-${t.id || Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
   userInput?.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendBtn?.click(); } });
   sendBtn?.addEventListener('click', async ()=>{
-    const content = (userInput.value||'').trim(); if(!content) return; const t=activeThread();
+    const content = (userInput.value||'').trim(); if(!content) return; const t = activeThread();
     t.messages.push({ role:'user', content, ts:Date.now() }); if(t.title==='New chat') setThreadTitleFromFirstUserMessage(t);
     userInput.value=''; saveData(); renderThread();
-    try{ const reply = await callOpenAI(t.messages); t.messages.push({ role:'assistant', content:reply, ts:Date.now() }); saveData(); renderThread(); }
-    catch(err){ t.messages.push({ role:'assistant', content:`⚠️ ${err.message||err}`, ts:Date.now() }); saveData(); renderThread(); }
+    try{
+      const reply = await callOpenAI(t.messages);
+      t.messages.push({ role:'assistant', content:reply, ts:Date.now() }); saveData(); renderThread();
+    } catch(err){
+      t.messages.push({ role:'assistant', content:`⚠️ ${err.message||err}`, ts:Date.now() }); saveData(); renderThread();
+    }
   });
 }
 
