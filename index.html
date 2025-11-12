@@ -95,7 +95,7 @@
     </div>
   </template>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script> <script> // Temporary debug fallback to confirm UI can be unlocked on this device document.addEventListener('DOMContentLoaded', function(){ const gateBtn = document.getElementById('gateBtn'); const gateInput = document.getElementById('gateInput'); const gateHint = document.getElementById('gateHint'); const gateEl = document.getElementById('gate'); const appEl = document.querySelector('.app'); gateBtn?.addEventListener('click', function(e){ e.preventDefault(); const pass = (gateInput?.value || '').trim(); if (!pass) { if(gateHint) gateHint.textContent = 'Password required'; return; } try { localStorage.setItem('chatapp.password.hash', (function(s){ let h=5381; for(let i=0;i<s.length;i++) h=((h<<5)+h)+s.charCodeAt(i); return String(h>>>0); })(pass)); localStorage.setItem('chatapp.password.set','1'); } catch(err) { if(gateHint) gateHint.textContent = 'Could not save password (storage blocked)'; return; } if(appEl){ appEl.style.filter='none'; appEl.style.pointerEvents='auto'; } if(gateEl) gateEl.classList.add('hidden'); if(gateHint) gateHint.textContent = ''; }); }); </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function(){
