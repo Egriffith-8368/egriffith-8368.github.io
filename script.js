@@ -1,3 +1,5 @@
+console.log('script.js loaded');
+
 /*
   Hardened password gate + DOM-ready mounting
   - Wraps everything in DOMContentLoaded so elements exist before we bind
