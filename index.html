@@ -96,5 +96,48 @@
   </template>
 
   <script src="script.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Minimal iPad-friendly fallback to allow testing if the main script has errors.
+  const gateBtn = document.getElementById('gateBtn');
+  const gateInput = document.getElementById('gateInput');
+  const gateHint = document.getElementById('gateHint');
+  const gateEl = document.getElementById('gate');
+  const appEl = document.querySelector('.app');
+
+  function simpleHash(s){
+    // small deterministic numeric hash (not secure — OK for gate-only UX)
+    let h = 5381;
+    for(let i=0;i<s.length;i++) h = ((h<<5)+h) + s.charCodeAt(i);
+    return String(h >>> 0);
+  }
+
+  gateBtn?.addEventListener('click', function(e){
+    try{
+      e.preventDefault();
+      const pass = (gateInput?.value || '').trim();
+      if(!pass){ if(gateHint) gateHint.textContent = 'Password required'; return; }
+      // set password markers in localStorage so the normal script can pick them up later
+      try{
+        localStorage.setItem('chatapp.password.hash', simpleHash(pass));
+        localStorage.setItem('chatapp.password.set', '1');
+      } catch(err){
+        if(gateHint) gateHint.textContent = 'Could not save password (storage blocked).';
+        return;
+      }
+      // hide gate UI
+      if(appEl) { appEl.style.filter = 'none'; appEl.style.pointerEvents = 'auto'; }
+      if(gateEl) gateEl.classList.add('hidden');
+      if(gateHint) gateHint.textContent = '';
+    }catch(err){
+      if(gateHint) gateHint.textContent = String(err.message || err);
+    }
+  });
+});
+</script>
+  
+
+
 </body>
 </html>
