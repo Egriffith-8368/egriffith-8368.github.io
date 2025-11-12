@@ -76,6 +76,8 @@ body{
 .gate-row{display:flex; gap:8px; margin:12px 0}
 .gate-row input{flex:1; padding:10px 12px; border-radius:10px; border:1px solid #2a2f47; background:#0e1220; color:var(--text)}
 .gate-hint{color:var(--muted); margin-top:6px}
+/* Ensure a gate with the .hidden class is actually hidden */
+.gate.hidden { display: none; }
 
 /* Scrollbar (subtle) */
 *{scrollbar-width:thin; scrollbar-color:#2a2f47 transparent}
